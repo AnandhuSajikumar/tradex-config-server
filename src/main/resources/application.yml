@@ -1,0 +1,14 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: tradex-config-server
+  profiles:
+    active: native
+  cloud:
+    config:
+      server:
+       native:
+         # This allows the config server to read configuration properties from the file system.
+          searchLocations: file:///${user.dir}/config-repo
