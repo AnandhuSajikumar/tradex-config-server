@@ -9,12 +9,39 @@ spring:
         - id: tradex-transact-service-route
           uri: lb://tradex-transact-service
           predicates:
-            - Path=/api/transact/**
+            - Path=/api/v1/trade/**
           filters:
             - name: CircuitBreaker
               args:
                 name: transactCircuitBreaker
                 fallbackUri: forward:/fallback/transact
+        - id: tradex-portfolio-service-route
+          uri: lb://tradex-portfolio-service
+          predicates:
+            - Path=/portfolio/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: portfolioCircuitBreaker
+                fallbackUri: forward:/fallback/portfolio
+        - id: tradex-identity-service-route
+          uri: lb://tradex-identity-service
+          predicates:
+            - Path=/api/v1/auth/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: identityCircuitBreaker
+                fallbackUri: forward:/fallback/identity
+        - id: tradex-market-service-route
+          uri: lb://tradex-market-service
+          predicates:
+            - Path=/v1/api/market/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: marketCircuitBreaker
+                fallbackUri: forward:/fallback/market
 
 resilience4j:
   circuitbreaker:
@@ -26,4 +53,10 @@ resilience4j:
         permittedNumberOfCallsInHalfOpenState: 3
     instances:
       transactCircuitBreaker:
+        baseConfig: default
+      portfolioCircuitBreaker:
+        baseConfig: default
+      identityCircuitBreaker:
+        baseConfig: default
+      marketCircuitBreaker:
         baseConfig: default
