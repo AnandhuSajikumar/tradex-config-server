@@ -10,5 +10,4 @@ spring:
     config:
       server:
        native:
-         # This allows the config server to read configuration properties from the file system.
           searchLocations: file:///${user.dir}/config-repo
