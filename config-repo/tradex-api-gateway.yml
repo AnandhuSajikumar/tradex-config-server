@@ -1,0 +1,29 @@
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: tradex-transact-service-route
+          uri: lb://tradex-transact-service
+          predicates:
+            - Path=/api/transact/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: transactCircuitBreaker
+                fallbackUri: forward:/fallback/transact
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10000ms
+        permittedNumberOfCallsInHalfOpenState: 3
+    instances:
+      transactCircuitBreaker:
+        baseConfig: default
