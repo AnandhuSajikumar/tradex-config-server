@@ -11,3 +11,19 @@ spring:
       server:
        native:
           searchLocations: file:///${user.dir}/config-repo
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    health:
+      show-details: always
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+  tracing:
+    sampling:
+      probability: 1.0
