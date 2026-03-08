@@ -45,6 +45,15 @@ spring:
               args:
                 name: identityCircuitBreaker
                 fallbackUri: forward:/fallback/identity
+        - id: tradex-identity-user-route
+          uri: lb://tradex-identity-service
+          predicates:
+            - Path=/api/v1/user/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: identityCircuitBreaker
+                fallbackUri: forward:/fallback/identity
         - id: tradex-market-service-route
           uri: lb://tradex-market-service
           predicates:
